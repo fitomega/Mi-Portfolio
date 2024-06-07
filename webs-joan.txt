@@ -34,3 +34,97 @@ Jose Miguel Molina: https://www.josemiguelmolina.com/ (responsive)
 Andres Fernandez Abogados: https://andresfernandez.pro/ (responsive)
 
 Experienca en desarrollo de webs con Wordpress / Elementor, Edicion de imagenes con photoshop, edicion de webs atraves de insertar CSS, HTML y JavaScript
+
+
+
+<script>
+
+/*
+esperamos a que la pagina carge y escondemos con display:none el bloque de texto con el texto y las imagenes
+*/
+
+window.addEventListener('load', function() {
+    var elemento = document.getElementById('kcite-indice-text');
+    if (elemento) {
+        elemento.style.display = 'none';}
+        
+    var elemento = document.getElementById('kcite-colums');
+    if (elemento) {
+        elemento.style.display = 'none';}
+    
+}); 
+    
+/*
+esperamos el tiempo especificadp y llamamos a la funcion para cargar las publicaciones
+*/
+
+const myTimeout = setTimeout(load_cites, 3000);
+
+/*
+
+*/
+
+function load_cites() {
+    
+    var cargando_icono = document.getElementById("cargando")
+    
+    cargando_icono.style.display = 'none';
+
+    var tabla = document.getElementById('tabla');
+
+    var cites_plugin = document.getElementsByClassName("kcite-bibliography");
+    
+   
+    
+    
+    var input = document.getElementById("kcite-indice-text").children[0].children
+
+    var cite_count = cites_plugin[0].children.length - 1
+    
+    tabla.innerHTML = '<table><tbody></tbody></table>'
+
+    for (let i = 0; i < input.length; i++) {
+        
+        if (i > 0 && i % 2 == 0){
+            var tmp_img = input[i].children[0]
+            
+             if (input[i-1].children[0] == undefined){
+                console.log("el javascript dio error en el elemento " + i + "de la lista de DOIs, podria ser un error al escribir el doi con la imagen debajo")
+             }
+            var tmp_doi_url = input[i-1].children[0].children[0].children[1]
+            var correct_doi_div
+            var correct_doi
+            
+            for (let t = cite_count; t >= 0; t--) {
+                var gen_doi = cites_plugin[0].children[t].children[2]
+                
+                
+                
+                if (tmp_doi_url.href == gen_doi.href){
+                    console.log("el doi generado correspondiente es: " + gen_doi.href)
+                    correct_doi = gen_doi.href
+                    correct_doi_div = gen_doi = cites_plugin[0].children[t].innerHTML
+                }
+            }
+            if (tmp_img == undefined){
+                
+                tabla.children[0].children[0].insertAdjacentHTML('beforeend', '<tr style="border: 1px solid blue"><td style="border-color: white; background-color: white"><img decoding="async" class="alignnone size-full table-img" src="https://www.webs7clicks.com/webs/web-sensogenomics/wp-content/uploads/2024/06/3cf6817d154016c03604caa903242c9a-300x300.png"></td><td style="border-color: white; background-color: white">'+ correct_doi_div + "</tr></td>")
+                
+                console.log("el javascript dio error en el elemento " + i + "de la lista de DOIs, podria ser un error al escribir el doi con la imagen debajo")
+                
+                
+            }else{
+                tabla.children[0].children[0].insertAdjacentHTML('beforeend', '<tr style="border: 1px solid blue"><td style="border-color: white; background-color: white"><img decoding="async" class="alignnone size-full table-img" src="' + tmp_img.src + '"></td><td style="border-color: white; background-color: white">'+ correct_doi_div + "</tr></td>")
+                
+                console.log(correct_doi_div)
+            }
+        }
+        
+    }
+   
+
+}
+
+
+
+</script>
